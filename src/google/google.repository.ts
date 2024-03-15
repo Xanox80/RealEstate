@@ -12,23 +12,20 @@ export class GoogleRepository {
 
 	async verifyUser(userinfo): Promise<any> {
 		const username = userinfo.firstName + ' ' + userinfo.lastName;
-		const g_id = userinfo.id.toString();
 		const password = '0';
 
 		// Register user if not exists
 		const registrationResult = await this.userRepository.registerUser({
 			username,
 			password,
-			g_id: '',
 		});
 
-		if (!registrationResult.success) {
+		if (!registrationResult) {
 			return { success: false, message: 'Error during registration' };
 		}
 
 		// Find or create user using a hypothetical findOrCreate method
 		const [user, created] = await this.userRepository.registerOrLoginUser({
-			g_id,
 			username,
 			password,
 		});

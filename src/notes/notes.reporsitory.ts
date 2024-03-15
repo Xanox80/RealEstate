@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { NoteModel, NoteDocument } from './note.schema';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NoteParamsDto } from './dto/note-params.dto';
 import { AuthResultDto } from './../notes/dto/auth-result.dto';
+import { NoteUpdaterequestDto } from 'src/common/dto/notes/request/note-update.dto';
+import { NoteDto } from 'src/common/dto/notes/note.dto';
+import { NoteResponseDto } from 'src/common/dto/notes/response/note-response.dto';
 
 @Injectable()
 export class NotesRepository {
@@ -13,7 +16,7 @@ export class NotesRepository {
 		private readonly notesModel: Model<NoteDocument>
 	) {}
 
-	async createNote(updatedData: NoteParamsDto): Promise<any> {
+	async createNote(updatedData: NoteDto): Promise<any> {
 		return await this.notesModel.create(updatedData);
 	}
 	async getAllNote(): Promise<NoteDocument[]> {
@@ -41,46 +44,43 @@ export class NotesRepository {
 	// 	}
 	// }
 
-	async deleteNotes(id: string): Promise<AuthResultDto> {
+	async deleteNotes(id: string): Promise<NoteResponseDto> {
 		const query = { _id: new mongoose.Types.ObjectId(id) };
 		const note: NoteDocument | null = await this.notesModel.findOne(query);
 		if (!note) {
-			return { success: false, message: 'Note not found' };
+			throw new NotFoundException('Note not found');
 		}
 		await note.deleteOne();
-		return { success: true, message: 'Deleted successufully' };
+		throw new NotFoundException('successufully delete');
 	}
 
-	async updateNote(noteParams: NoteParamsDto): Promise<AuthResultDto> {
+	async updateNote(noteParams: NoteUpdaterequestDto): Promise<NoteModel> {
 		try {
 			const { id, Name, Surname, price, residence } = noteParams;
-			const query = { _id: new mongoose.Types.ObjectId(id) };
-			const note: NoteDocument | null = await this.notesModel.findOne(query);
+			const note = await this.notesModel.findById(id);
 
 			if (!note) {
-				return { success: false, message: 'Note not found' };
+				throw new NotFoundException('Note not found');
 			}
 
-			if (Name) {
+			if (Name !== undefined) {
 				note.Name = Name;
 			}
-			if (Surname) {
+			if (Surname !== undefined) {
 				note.Surname = Surname;
 			}
-			if (price) {
+			if (price !== undefined) {
 				note.price = price;
 			}
-			if (residence) {
+			if (residence !== undefined) {
 				note.residence = residence;
 			}
 
-			await note.save(); // Добавлено ожидание сохранения
+			await note.save();
 
-			return { success: true, message: 'Updated successfully' };
+			return note;
 		} catch (error) {
-			// Обработка ошибок, если необходимо
-			console.error('Error updating note:', error);
-			return { success: false, message: 'An error occurred while updating' };
+			throw new NotFoundException('An error occurred while updating');
 		}
 	}
 

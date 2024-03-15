@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { VillaRepository } from './villa.repository';
 import { VillaParamsDto } from './dto/viila-paramss.dto';
 import { VillaDocument } from './villa.schema';
+import { VillaDto } from 'src/common/dto/villa/villa.dto';
+import { VillaUpdateRequestDto } from 'src/common/dto/villa/request/villa-update.dto';
 
 @Injectable()
 export class VillaService {
@@ -18,7 +20,7 @@ export class VillaService {
 		return await this.villaRepository.deleteVilla(id);
 	}
 
-	async updateVilla(villaParams: VillaParamsDto) {
-		return await this.villaRepository.updateNote(villaParams);
+	async updateVilla(noteParams: VillaUpdateRequestDto) {
+		return await this.villaRepository.updateVilla(noteParams);
 	}
 }

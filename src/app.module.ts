@@ -8,6 +8,7 @@ import { ApartmentModule } from './apartment/apartment.module';
 import { VillaModule } from './villa/villa.module';
 import { AppealModule } from './appeal/appeal.module';
 import { GoogleModule } from './google/google.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { GoogleModule } from './google/google.module';
 		VillaModule,
 		AppealModule,
 		GoogleModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

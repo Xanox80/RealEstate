@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { VillaModel, VillaDocument } from './villa.schema';
 import { VillaParamsDto } from './dto/viila-paramss.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
+import { VillaDto } from 'src/common/dto/villa/villa.dto';
+import { VillaResponseDto } from 'src/common/dto/villa/response/villa-response.dto';
+import { VillaUpdateRequestDto } from 'src/common/dto/villa/request/villa-update.dto';
 
 @Injectable()
 export class VillaRepository {
@@ -13,7 +16,7 @@ export class VillaRepository {
 		private readonly villaModel: Model<VillaDocument>
 	) {}
 
-	async createVilla(updatedData: VillaParamsDto): Promise<any> {
+	async createVilla(updatedData: VillaDto): Promise<any> {
 		return await this.villaModel.create(updatedData);
 	}
 	async getAllVilla(): Promise<VillaDocument[]> {
@@ -27,45 +30,43 @@ export class VillaRepository {
 		}
 	}
 
-	async deleteVilla(id: string): Promise<AuthResultDto> {
+	async deleteVilla(id: string): Promise<VillaResponseDto> {
 		const query = { _id: new mongoose.Types.ObjectId(id) };
 		const note: VillaDocument | null = await this.villaModel.findOne(query);
 		if (!note) {
-			return { success: false, message: 'Note not found' };
+			throw new NotFoundException('Note not found');
 		}
 		await note.deleteOne();
-		return { success: true, message: 'Deleted successufully' };
+		throw new NotFoundException('successufully delete');
 	}
 
-	async updateNote(villaParams: VillaParamsDto): Promise<AuthResultDto> {
+	async updateVilla(villaParams: VillaUpdateRequestDto): Promise<VillaModel> {
 		try {
 			const { id, Name, Surname, price, residence } = villaParams;
-			const query = { _id: new mongoose.Types.ObjectId(id) };
-			const note: VillaDocument | null = await this.villaModel.findOne(query);
+			const villa = await this.villaModel.findById(id);
 
-			if (!note) {
-				return { success: false, message: 'Note not found' };
-			}
-
-			if (Name) {
-				note.Name = Name;
-			}
-			if (Surname) {
-				note.Surname = Surname;
-			}
-			if (price) {
-				note.price = price;
-			}
-			if (residence) {
-				note.residence = residence;
+			if (!villa) {
+				throw new NotFoundException('Note not found');
 			}
 
-			await note.save();
+			if (Name !== undefined) {
+				villa.Name = Name;
+			}
+			if (Surname !== undefined) {
+				villa.Surname = Surname;
+			}
+			if (price !== undefined) {
+				villa.price = price;
+			}
+			if (residence !== undefined) {
+				villa.residence = residence;
+			}
 
-			return { success: true, message: 'Updated successfully' };
+			await villa.save();
+
+			return villa;
 		} catch (error) {
-			console.error('Error updating note:', error);
-			return { success: false, message: 'An error occurred while updating' };
+			throw new NotFoundException('An error occurred while updating');
 		}
 	}
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ApartmentRepository } from './apartment.repository';
 import { ApartmentParamsDto } from './dto/apartment-params.dto';
 import { ApartmentDocument } from './apartment.schema';
+import { ApartmentUpdateRequest } from 'src/common/dto/apartment/request/apartment-update-request.dto';
 
 @Injectable()
 export class ApartmentService {
@@ -18,7 +19,7 @@ export class ApartmentService {
 		return await this.apartmentRepository.deleteApartment(id);
 	}
 
-	async updateApartment(noteParams: ApartmentParamsDto) {
+	async updateApartment(noteParams: ApartmentUpdateRequest) {
 		return await this.apartmentRepository.updateApartment(noteParams);
 	}
 }

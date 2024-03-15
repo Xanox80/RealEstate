@@ -1,30 +1,57 @@
-import { Controller, Post, Delete, Param, Body } from '@nestjs/common';
+import {
+	Controller,
+	Post,
+	Delete,
+	Param,
+	Body,
+	HttpCode,
+	HttpStatus,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserParamsDto } from './dto/user-params.dto';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
+import { UserRequestDto } from 'src/common/dto/user/request/user-request.dto';
+import { UserUpdateRequestDto } from 'src/common/dto/user/request/user-update-request.dto';
+import { UserResponseDto } from 'src/common/dto/user/response/user-response.dto';
 
 @Controller('user')
+@ApiTags('User')
+@ApiBearerAuth()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) {}
 
-  @Post('/api/login')
-  loginUser(@Body() userParams: UserParamsDto) {
-    return this.userService.loginUser(userParams);
-  }
+	@Post('/api/login')
+	@ApiOperation({ description: 'loginUser' })
+	@HttpCode(HttpStatus.OK)
+	@ApiResponse({ type: UserResponseDto })
+	loginUser(@Body() userParams: UserRequestDto): Promise<UserResponseDto> {
+		return this.userService.loginUser(userParams);
+	}
 
-  @Post('/api/create')
-  registerUser(@Body() userParams: UserParamsDto) {
-    return this.userService.registerUser(userParams);
-  }
+	@Post('/api/create')
+	@ApiOperation({ description: 'CreateUser' })
+	@HttpCode(HttpStatus.OK)
+	@ApiResponse({ type: UserResponseDto })
+	registerUser(@Body() userParams: UserRequestDto) {
+		return this.userService.registerUser(userParams);
+	}
 
-  @Post('/api/update')
-  updateUser(@Body() userParams: UserParamsDto) {
-    return this.userService.updateUser(userParams);
-  }
+	@Post('/api/update')
+	@ApiOperation({ description: 'UpdateUser' })
+	@HttpCode(HttpStatus.OK)
+	@ApiResponse({ type: UserResponseDto })
+	@ApiBearerAuth()
+	updateUser(@Param('id') id: string, @Body() userParams: UserUpdateRequestDto) {
+		return this.userService.updateUser(userParams);
+	}
 
-  @Delete('/api/delete/:id')
-  deleteUser(@Param() id: string) {
-    this.userService.deleteUser(id);
-  }
+	@Delete('/api/delete/:id')
+	@ApiOperation({ description: 'DeleteUser' })
+	@HttpCode(HttpStatus.OK)
+	@ApiBearerAuth()
+	deleteUser(@Param('id') id: string) {
+		this.userService.deleteUser(id);
+	}
 }
 
 // import express, { Request, Response } from 'express';

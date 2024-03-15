@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { ApartmentModel, ApartmentDocument } from './apartment.schema';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ApartmentParamsDto } from './dto/apartment-params.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
+import { NoteResponseDto } from 'src/common/dto/notes/response/note-response.dto';
 
 @Injectable()
 export class ApartmentRepository {
@@ -27,47 +28,44 @@ export class ApartmentRepository {
 		}
 	}
 
-	async deleteApartment(id: string): Promise<AuthResultDto> {
+	async deleteApartment(id: string): Promise<NoteResponseDto> {
 		const query = { _id: new mongoose.Types.ObjectId(id) };
 		const note: ApartmentDocument | null = await this.apartmentModel.findOne(query);
 		if (!note) {
-			return { success: false, message: 'Note not found' };
+			throw new NotFoundException('Note not found');
 		}
 		await note.deleteOne();
-		return { success: true, message: 'Deleted successufully' };
+		throw new NotFoundException('successufully delete');
 	}
 
-	async updateApartment(apartmentParams: ApartmentParamsDto): Promise<AuthResultDto> {
+	async updateApartment(apartmentParams: ApartmentParamsDto): Promise<ApartmentModel> {
 		try {
 			const { id, Name, Surname, price, residence } = apartmentParams;
-			const query = { _id: new mongoose.Types.ObjectId(id) };
-			const note: ApartmentDocument | null =
-				await this.apartmentModel.findOne(query);
+			const apartment = await this.apartmentModel.findById(id);
 
-			if (!note) {
-				return { success: false, message: 'Note not found' };
+			if (!apartment) {
+				throw new NotFoundException('Note not found');
 			}
 
 			if (Name) {
-				note.Name = Name;
+				apartment.Name = Name;
 			}
 			if (Surname) {
-				note.Surname = Surname;
+				apartment.Surname = Surname;
 			}
 			if (price) {
-				note.price = price;
+				apartment.price = price;
 			}
 			if (residence) {
-				note.residence = residence;
+				apartment.residence = residence;
 			}
 
-			await note.save(); // Добавлено ожидание сохранения
-
-			return { success: true, message: 'Updated successfully' };
+			await apartment.save(); // Добавлено ожидание сохранения
+			return apartment;
 		} catch (error) {
 			// Обработка ошибок, если необходимо
 			console.error('Error updating note:', error);
-			return { success: false, message: 'An error occurred while updating' };
+			throw new NotFoundException('An error occurred while updating');
 		}
 	}
 }
