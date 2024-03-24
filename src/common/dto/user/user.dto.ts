@@ -1,9 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { User } from 'src/user/user.schema';
 
-export class UserDto extends User {
+export class UserDto {
 	@ApiProperty({ example: 'Bogdan' })
 	@IsString()
 	@IsNotEmpty()
@@ -15,4 +14,16 @@ export class UserDto extends User {
 	@IsNotEmpty()
 	@Expose()
 	password: string;
+
+	@ApiProperty()
+	@Expose()
+	access_token: string;
+
+	@ApiProperty()
+	@Expose()
+	refresh_token: string;
+
+	@ApiPropertyOptional()
+	@Expose()
+	g_id?: string;
 }

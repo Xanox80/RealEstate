@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsString, IsNotEmpty } from 'class-validator';
-import { ApartmentModel } from 'src/apartment/apartment.schema';
 
-export class ApartmentDto extends ApartmentModel {
+export class ApartmentDto {
 	@ApiProperty({ example: 'Bogdan' })
 	@IsString()
 	@IsNotEmpty()

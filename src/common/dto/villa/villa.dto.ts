@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsString, IsNotEmpty } from 'class-validator';
-import { VillaModel } from 'src/villa/villa.schema';
 
-export class VillaDto extends VillaModel {
+export class VillaDto {
 	@ApiProperty({ example: 'Bogdan' })
 	@IsString()
 	@IsNotEmpty()

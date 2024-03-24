@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 export class AppController {
 	constructor(private readonly appService: AppService) {}
 
-	@Get('/main') // Сюда сунеш усі статичні вкладки HTML, цей контролер тупо ними відповідати повинен
+	@Get('/main')
 	getHello(): string {
 		return this.appService.getHello();
 	}

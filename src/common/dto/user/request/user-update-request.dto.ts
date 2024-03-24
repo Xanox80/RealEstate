@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class UserUpdateRequestDto {
 	@ApiPropertyOptional({ example: 'Bogdan' })

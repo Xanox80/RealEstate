@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { NoteModel } from 'src/notes/note.schema';
 
-export class NoteDto extends NoteModel {
+export class NoteDto {
 	@ApiProperty({ example: 'Bogdan' })
 	@IsString()
 	@IsNotEmpty()
