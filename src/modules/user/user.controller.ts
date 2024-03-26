@@ -1,6 +1,15 @@
-import { Controller, Delete, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+	Controller,
+	Delete,
+	Param,
+	HttpCode,
+	HttpStatus,
+	Body,
+	Post,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserDto, UserResponseDto, UserUpdateRequestDto } from 'src/common';
 
 @Controller('user')
 @ApiTags('User')
@@ -8,14 +17,15 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	// @Post('/update')										// TODO Rework from update to change password and username
-	// @ApiOperation({ description: 'UpdateUser' })
-	// @HttpCode(HttpStatus.OK)
-	// @ApiResponse({ type: UserResponseDto })
-	// @ApiBearerAuth()
-	// updateUser(@Param('id') id: string, @Body() updateData: UserUpdateRequestDto) {
-	// 	return this.userService.updateUser(id, updateData);
-	// }
+	@Post('/update/:id')
+	@ApiOperation({ description: 'UpdateUser' })
+	@HttpCode(HttpStatus.OK)
+	@ApiResponse({ type: UserResponseDto })
+	@ApiBearerAuth()
+	async updateUser(@Param('id') id: string, @Body() userParams: UserUpdateRequestDto) {
+		userParams.id = id;
+		return this.userService.upDateUser(id, userParams);
+	}
 
 	@Delete('/delete/:id')
 	@ApiOperation({ description: 'DeleteUser' })
@@ -25,50 +35,3 @@ export class UserController {
 		this.userService.deleteUser(id);
 	}
 }
-
-// import express, { Request, Response } from 'express';
-// import UserService from '../user/user.service';
-// import { UserRepository } from '../user/user.repository';
-// import UserModel from '../models/user.model';
-
-// const userRouter = express.Router();
-
-// const userRepository = new UserRepository(UserModel);
-// const userService = new UserService(userRepository); // HUINJA, PUSAV DAUN, UDALITI POTOM
-
-// userRouter.route('/api/login').post(async (req: Request, res: Response) => {
-//   try {
-//     const result = await userService.loginUser(
-//       req.body.username,
-//       req.body.password,
-//     );
-//     res.send(result);
-//   } catch (error) {
-//     console.error('Error during login:', error);
-//     res.status(500).send({ success: false, message: 'Internal server error' });
-//   }
-// });
-
-// userRouter.route('/api/create').post(async (req: Request, res: Response) => {
-//   try {
-//     const result = await userService.registerUser(
-//       req.body.username,
-//       req.body.password,
-//     );
-//     res.send(result);
-//   } catch (error) {
-//     console.error('Error during registration:', error);
-//     res.status(500).send({ success: false, message: 'Internal server error' });
-//   }
-// });
-
-// userRouter
-//   .route('/api/update')
-//   .put((req: Request, res: Response) => {
-//     res.send('update user...');
-//   })
-//   .delete((req: Request, res: Response) => {
-//     res.send('delete user...');
-//   });
-
-// export default userRouter;

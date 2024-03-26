@@ -58,10 +58,9 @@ export class ApartmentRepository {
 				apartment.residence = residence;
 			}
 
-			await apartment.save(); // Добавлено ожидание сохранения
+			await apartment.save();
 			return apartment;
 		} catch (error) {
-			// Обработка ошибок, если необходимо
 			console.error('Error updating note:', error);
 			throw new NotFoundException('An error occurred while updating');
 		}

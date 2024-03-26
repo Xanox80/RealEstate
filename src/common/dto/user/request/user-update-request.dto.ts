@@ -4,6 +4,11 @@ import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class UserUpdateRequestDto {
+	@IsString()
+	@Expose()
+	@Optional()
+	id?: string;
+
 	@ApiPropertyOptional({ example: 'Bogdan' })
 	@IsString()
 	@Expose()
