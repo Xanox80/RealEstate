@@ -16,6 +16,9 @@ export class Note {
 
 	@Prop()
 	residence: string;
+
+	@Prop()
+	ratingNotes: number;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

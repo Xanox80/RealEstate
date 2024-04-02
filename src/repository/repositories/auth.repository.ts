@@ -23,7 +23,7 @@ export class AuthRepository {
 	) {}
 
 	async register(authParams: AuthRequestDto): Promise<User> {
-		const { username, password } = authParams;
+		const { username, password, number } = authParams;
 
 		const check = await this.userModel.findOne({ username });
 
@@ -32,7 +32,11 @@ export class AuthRepository {
 		}
 
 		const hashedPassword = await bcrypt.hash(password, 10);
-		const user = await this.userModel.create({ username, password: hashedPassword });
+		const user = await this.userModel.create({
+			username,
+			password: hashedPassword,
+			number,
+		});
 		const tokenPair = await this.generateTokenPair(user.id);
 
 		return { ...user.toJSON(), ...tokenPair };

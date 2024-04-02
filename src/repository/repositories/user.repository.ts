@@ -23,7 +23,7 @@ export class UserRepository {
 
 	async updateUserById(id: string, userParams: UserUpdateRequestDto): Promise<User> {
 		try {
-			const { username, password } = userParams;
+			const { username, password, number } = userParams;
 			const user = await this.userModel.findById(id);
 
 			if (!user) {
@@ -33,9 +33,14 @@ export class UserRepository {
 			if (username) {
 				user.username = username;
 			}
+
 			if (password) {
-				const hashedPassword = await bcrypt.hash(password, 10); // Хешуємо новий пароль з силею хешування 10
+				const hashedPassword = await bcrypt.hash(password, 10);
 				user.password = hashedPassword;
+			}
+
+			if (number) {
+				user.number = number;
 			}
 
 			await user.save();

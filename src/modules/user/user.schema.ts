@@ -7,11 +7,15 @@ export type UserDocument = HydratedDocument<User>;
 export class User {
 	@Prop()
 	id: string;
+
 	@Prop()
 	username: string;
 
 	@Prop()
 	password: string;
+
+	@Prop()
+	number: number;
 
 	@Prop()
 	access_token?: string;

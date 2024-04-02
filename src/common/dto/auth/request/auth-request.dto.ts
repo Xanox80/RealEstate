@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 export class AuthRequestDto {
 	@ApiProperty({ example: 'Bogdan' })
 	@IsString()
@@ -13,4 +13,10 @@ export class AuthRequestDto {
 	@IsNotEmpty()
 	@Expose()
 	password: string;
+
+	@ApiPropertyOptional({ example: '034985734' })
+	@IsNumber()
+	@IsNotEmpty()
+	@Expose()
+	number?: number;
 }

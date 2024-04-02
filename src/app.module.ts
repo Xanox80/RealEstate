@@ -10,6 +10,7 @@ import { AppealModule } from './modules/appeal/appeal.module';
 import { AuthModule } from './auth/auth.module';
 import { RepositoryModule } from './repository';
 import { getDbURL } from './config';
+import { ratingModule } from './modules/rating/rating.module';
 @Module({
 	imports: [
 		MongooseModule.forRoot(getDbURL()),
@@ -20,6 +21,7 @@ import { getDbURL } from './config';
 		AppealModule,
 		AuthModule,
 		RepositoryModule,
+		ratingModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

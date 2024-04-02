@@ -16,6 +16,9 @@ export class Apartmen {
 
 	@Prop()
 	residence: string;
+
+	@Prop()
+	ratingApartment: number;
 }
 
 export const ApartmentSchema = SchemaFactory.createForClass(Apartmen);

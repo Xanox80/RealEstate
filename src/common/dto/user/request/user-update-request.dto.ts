@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UserUpdateRequestDto {
 	@IsString()
@@ -20,4 +20,9 @@ export class UserUpdateRequestDto {
 	@Optional()
 	@Expose()
 	password?: string;
+
+	@ApiPropertyOptional({ example: '+98457384' })
+	@IsNumber()
+	@Expose()
+	number: number;
 }

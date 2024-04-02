@@ -7,6 +7,7 @@ import {
 	NotesRepository,
 	UserRepository,
 	VillaRepository,
+	RatingRepository,
 } from './repositories';
 import { Apartmen, ApartmentSchema } from 'src/modules/apartment/apartment.schema';
 import { Appeal, AppealSchema } from 'src/modules/appeal/appeal.schema';
@@ -15,6 +16,7 @@ import { Note, NoteSchema } from 'src/modules/notes/note.schema';
 
 import { User, UserSchema } from 'src/modules/user/user.schema';
 import { ConfigService } from '@nestjs/config';
+import { Rating, RatingSchema } from 'src/modules/rating/rating.shema';
 const providers = [
 	ConfigService,
 	AuthRepository,
@@ -23,6 +25,7 @@ const providers = [
 	VillaRepository,
 	NotesRepository,
 	UserRepository,
+	RatingRepository,
 ];
 
 const models = [
@@ -31,6 +34,7 @@ const models = [
 	{ name: Villa.name, schema: VillaSchema },
 	{ name: Note.name, schema: NoteSchema },
 	{ name: User.name, schema: UserSchema },
+	{ name: Rating.name, schema: RatingSchema },
 ];
 @Global()
 @Module({
