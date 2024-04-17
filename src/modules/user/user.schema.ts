@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { RolesEnum } from '../../enum/roles.enum';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -24,7 +25,7 @@ export class User {
 	refresh_token?: string;
 
 	@Prop()
-	roleId?: number;
+	role: RolesEnum;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

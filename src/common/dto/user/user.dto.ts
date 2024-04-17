@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { RolesEnum } from '../../../enum/roles.enum';
 
 export class UserDto {
 	@ApiProperty({ example: 'Bogdan' })
@@ -32,4 +33,8 @@ export class UserDto {
 	@ApiPropertyOptional()
 	@Expose()
 	g_id?: string;
+
+	@ApiProperty()
+	@Expose()
+	role: RolesEnum;
 }

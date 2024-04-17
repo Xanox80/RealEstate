@@ -5,8 +5,10 @@ import { UserUpdateRequestDto } from 'src/common';
 
 @Injectable()
 export class UserService {
-	userModel: any;
 	constructor(private readonly userRepository: UserRepository) {}
+	async getUserById(id: string) {
+		return this.userRepository.findById(id);
+	}
 	async upDateUser(id: string, userParams: UserUpdateRequestDto): Promise<User> {
 		return this.userRepository.updateUserById(id, userParams);
 	}

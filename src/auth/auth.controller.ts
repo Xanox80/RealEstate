@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthRequestDto, AuthResponseDto } from 'src/common';
+import { AuthRequestDto, AuthResponseDto, Public } from 'src/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
+	@Public()
 	@Post('register')
 	@ApiOperation({ description: 'login' })
 	@HttpCode(HttpStatus.OK)
@@ -28,6 +29,7 @@ export class AuthController {
 		return this.authService.registerAuth(authParams);
 	}
 
+	@Public()
 	@Post('login')
 	@ApiOperation({ description: 'loginAuth' })
 	@HttpCode(HttpStatus.OK)

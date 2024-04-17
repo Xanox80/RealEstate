@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { ratingDto } from '../rating.dto';
+import { photoDto } from '../photo.dto';
 
-export class RatingRequestDto extends ratingDto {
+export class PhotoRequestDto extends photoDto {
 	@ApiProperty()
 	@Expose()
-	rating: number;
+	photoBase64: string;
 }

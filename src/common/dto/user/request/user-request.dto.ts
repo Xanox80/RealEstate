@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsEnum } from 'class-validator';
+import { RolesEnum } from 'src/enum/roles.enum';
 
 export class UserRequestDto {
 	@ApiProperty({ example: 'Bogdan' })
@@ -15,9 +16,15 @@ export class UserRequestDto {
 	@Expose()
 	password: string;
 
-	@ApiProperty({ example: '+98457384' })
-	@IsNumber()
-	@IsNotEmpty()
+	@ApiProperty({ example: '98457384' })
+	// @IsNumber()
+	// @IsNotEmpty()
 	@Expose()
 	number: number;
+
+	@ApiProperty({ example: RolesEnum.MEMBER })
+	@IsEnum(RolesEnum)
+	@IsNotEmpty()
+	@Expose()
+	role: RolesEnum;
 }
